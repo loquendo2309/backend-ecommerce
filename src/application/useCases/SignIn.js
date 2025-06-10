@@ -5,6 +5,7 @@ class SignIn {
     this.tokenGenerator = tokenGenerator;
   }
 
+  
   async execute({ username, password }) {
     const user = await this.userRepository.findByUsername(username);
     if (!user) throw new Error('User not found');

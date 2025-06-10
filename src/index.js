@@ -8,10 +8,19 @@ const productRoutes = require('./adapters/routes/productRoutes');
 const { verifyToken } = require('./adapters/middlewares/authJwt');
 const swaggerUI = require('swagger-ui-express');
 const swaggerSpec = require('./infraestructure/docs/swaggerConfig');
+const MongoUserRepository     = require('./infraestructure/repositories/MongoUserRepository');
+const PasswordHasher          = require('./infraestructure/services/PasswordHasher');
+const TokenGenerator          = require('./infraestructure/services/TokenGenerator');
+const SignIn                  = require('./application/useCases/SignIn');
+const authRoutes              = require('./adapters/routes/authRoutes');
+const userRoutes          = require('./adapters/routes/userRoutes');
+const SignUp              = require('./application/useCases/SignUp');
 
 const app = express();
 const port = config.port;
-
+// Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 // Dependencies
 const dbType = config.DB_TYPE || 'mongodb'; // 'mongo' o 'mysql'
 let productRepository;
@@ -21,13 +30,18 @@ if (dbType === 'mysql') {
 } else {
   productRepository = new MongoProductRepository();
 }
+// —– SETUP AUTH —–
+const userRepo       = new MongoUserRepository();
+const passwordHasher = new PasswordHasher();
+const tokenGen       = new TokenGenerator();
+const signInUseCase  = new SignIn(userRepo, passwordHasher, tokenGen);
+app.use('/api/v1/auth', authRoutes(signInUseCase));
 
+// ——— SETUP SIGNUP ———
+const signUpUseCase = new SignUp(userRepo, passwordHasher);
+app.use('/api/v1/users',express.json(),userRoutes(signUpUseCase));
 
 const productController = new ProductController(productRepository);
-
-// Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 // Configuración de Swagger UI
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 // Routes
