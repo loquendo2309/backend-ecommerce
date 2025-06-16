@@ -1,4 +1,4 @@
-# backen-ecommerce
+# backend-ecommerce
 
 **Proyecto educativo**: Este repositorio contiene el backend de una aplicación de comercio electrónico, desarrollado con Node.js y Express. Está diseñado con fines educativos para comprender la estructura y funcionamiento de una API RESTful en un entorno de comercio electrónico.
 
