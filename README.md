@@ -45,7 +45,7 @@ Sigue estos pasos para configurar y ejecutar el proyecto en tu máquina local:
    npm start
    ```
 
-   El servidor debería estar corriendo en `http://localhost:3000`.
+   El servidor debería estar corriendo en `http://localhost:5000`.
 
 ## Estructura del proyecto
 
@@ -53,24 +53,56 @@ El proyecto está organizado de la siguiente manera:
 
 ```
 backen-ecommerce/
-├── src/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middlewares/
+├── src
+│   ├── adapters
+│   │   ├── controllers
+│   │   │   ├── AuthController.js
+│   │   │   ├── ProductController.js
+│   │   │   └── UserController.js
+│   │   ├── middlewares
+│   │   │   └── authJwt.js
+│   │   └── routes
+│   │       ├── authRoutes.js
+│   │       ├── productRoutes.js
+│   │       └── userRoutes.js
+│   ├── application
+│   │   ├── dtos
+│   │   │   └── ProductDTO.js
+│   │   └── useCases
+│   │       ├── CreateProduct.js
+│   │       ├── SignIn.js
+│   │       └── SignUp.js
+│   ├── config
+│   │   └── index.js
+│   ├── domain
+│   │   ├── entities
+│   │   │   ├── Product.js
+│   │   │   └── User.js
+│   │   └── repositories
+│   │       ├── ProductRepository.js
+│   │       └── UserRepository.js
+│   ├── infraestructure
+│   │   ├── database
+│   │   │   ├── models
+│   │   │   │   ├── ProductModel.js
+│   │   │   │   └── User.js
+│   │   │   ├── mongoose.js
+│   │   │   └── mysqlConnection.js
+│   │   ├── docs
+│   │   │   └── swaggerConfig.js
+│   │   ├── repositories
+│   │   │   ├── MongoProductRepository.js
+│   │   │   ├── MongoUserRepository.js
+│   │   │   └── MySQLProductRepository.js
+│   │   └── services
+│   │       ├── PasswordHasher.js
+│   │       └── TokenGenerator.js
 │   └── index.js
-├── .envexample
-├── .eslintrc.json
-├── .gitignore
+├── package-lock.json
 ├── package.json
-└── package-lock.json
+└── README.md
 ```
 
-* `controllers/`: Contiene la lógica de negocio para manejar las solicitudes y respuestas.
-* `models/`: Define los esquemas de Mongoose para las entidades de la base de datos.
-* `routes/`: Define las rutas de la API y las asocia con los controladores correspondientes.
-* `middlewares/`: Contiene funciones intermedias para el manejo de errores, autenticación, etc.
-* `index.js`: Punto de entrada de la aplicación.
 
 ## Tecnologías utilizadas
 
